@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PizzaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+// Pizzas CRUD
+Route::get('/pizzas', [PizzaController::class,'index'])->name("pizzas.index");
+Route::get('/pizzas/create', [PizzaController::class,'create'])->name("pizzas.create");
+Route::post("/pizzas",[PizzaController::class,'store'])->name("pizzas.store");
