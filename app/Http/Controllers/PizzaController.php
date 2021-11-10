@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PizzaRequest;
+use App\Models\Pizza;
 use Illuminate\Http\Request;
 
 use function Ramsey\Uuid\v1;
@@ -16,8 +17,8 @@ class PizzaController extends Controller
      */
     public function index()
     {
-        // return view("pizzas.index");
-        "pizzas";
+        return view("pizzas.index");
+        // "pizzas";
     }
 
     /**
@@ -38,7 +39,19 @@ class PizzaController extends Controller
      */
     public function store(PizzaRequest $request)
     {
-        dd($request);
+        $path = $request->image->store('public/pizzas');
+        // dd($path);
+        Pizza::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'small_pizza_price' => $request->small_pizza_price,
+            'medium_pizza_price' => $request->medium_pizza_price,
+            'large_pizza_price' => $request->large_pizza_price,
+            'category' => $request->category,
+            'image' => $path,
+        ]);
+
+        return redirect()->route('pizzas.index');
     }
 
     /**
