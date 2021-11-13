@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PizzaRequest;
 use App\Models\Pizza;
-use Illuminate\Http\Request;
-
-use function Ramsey\Uuid\v1;
 
 class PizzaController extends Controller
 {
@@ -17,8 +14,8 @@ class PizzaController extends Controller
      */
     public function index()
     {
-        return view("pizzas.index");
-        // "pizzas";
+        $pizzas = Pizza::all();
+        return view("pizzas.index",compact('pizzas'));
     }
 
     /**
@@ -40,7 +37,6 @@ class PizzaController extends Controller
     public function store(PizzaRequest $request)
     {
         $path = $request->image->store('public/pizzas');
-        // dd($path);
         Pizza::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -51,7 +47,7 @@ class PizzaController extends Controller
             'image' => $path,
         ]);
 
-        return redirect()->route('pizzas.index');
+        return redirect()->route('pizzas.index')->with('message','Pizza created successfully');
     }
 
     /**
@@ -71,9 +67,9 @@ class PizzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Pizza $pizza)
     {
-        //
+        return view('pizzas.edit',compact('pizza'));
     }
 
     /**
@@ -83,9 +79,25 @@ class PizzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PizzaRequest $request, Pizza $pizza)
     {
-        //
+        if($request->has('image')){
+            $path = $request->image->store('public/pizzas');
+        }else{
+            $path = $pizza->image;
+        }
+
+        $pizza->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'small_pizza_price' => $request->small_pizza_price,
+            'medium_pizza_price' => $request->medium_pizza_price,
+            'large_pizza_price' => $request->large_pizza_price,
+            'category' => $request->category,
+            'image' => $path,
+        ]);
+
+        return redirect()->route('pizzas.index')->with('message','Pizza updated successfully');
     }
 
     /**
@@ -94,8 +106,9 @@ class PizzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pizza $pizza)
     {
-        //
+        $pizza->delete();
+        return redirect()->route('pizzas.index')->with('message','Pizza deleted successfully');
     }
 }
