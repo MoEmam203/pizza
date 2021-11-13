@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PizzaController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,11 @@ require __DIR__.'/auth.php';
 // Route::get('/pizzas/{pizza}/edit',[PizzaController::class,'edit'])->name('pizzas.edit');
 // Route::put('/pizzas/{pizza}/update',[PizzaController::class,'update'])->name('pizzas.update');
 // Route::delete('/pizzas/{pizza}/delete',[PizzaController::class,'destroy'])->name('pizzas.destroy');
-
-Route::resource('pizzas', PizzaController::class)->middleware(['auth','admin'])->except('show');
+Route::middleware(['auth', 'admin'])->group(function () {
+    
+    Route::resource('pizzas', PizzaController::class)->except('show');
+    
+    // Orders
+    Route::get('/user/orders',[OrderController::class,'index'])->name('user.order');
+    Route::post('/order/{order}/change',[OrderController::class,'changeStatus'])->name('order.change');
+});

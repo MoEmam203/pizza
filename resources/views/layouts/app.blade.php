@@ -31,13 +31,14 @@
 
 
             <div class="row">
-                <div class="py-12 col-4">
+                <div class="py-12 col-2">
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-6 bg-white border-b border-gray-200">
                                 <ul class="list-group">
                                     <a href="{{ route('pizzas.index') }}" class="list-group-item list-group-item-action">View</a>
                                     <a href="{{ route('pizzas.create') }}" class="list-group-item list-group-item-action">Add</a>
+                                    <a href="{{ route('user.order') }}" class="list-group-item list-group-item-action">User Orders</a>
                                 </ul>
                             </div>
                             @if (count($errors)>0)
@@ -57,7 +58,7 @@
                     </div>
                 </div>
 
-                <div class="py-12 col-8">
+                <div class="py-12 col-10">
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-6 bg-white border-b border-gray-200">
