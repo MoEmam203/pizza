@@ -45,4 +45,6 @@
         </tbody>
     </table>    
 
+    {{ $pizzas->links() }}
+
 </x-app-layout>
